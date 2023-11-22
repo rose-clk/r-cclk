@@ -1,0 +1,80 @@
+/* PRINT PREVIEW IN THE BROWSER */
+@media screen{
+	body{
+		width: 100%;
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		background: black;
+		/* Paramêtre le décompter de page */
+		/* Set a page counter */
+		counter-reset: page-counter;
+	}
+
+	/* Paramètres de la page */
+	/* Page settings */
+	.page{
+		width: var(--page-width);
+		height: var(--page-height);
+		padding: 30px;
+		page-break-after: always;
+		position: relative;
+		background: white;
+		margin: 10px;
+	}
+
+	/* Affiche les éléments ayant la classe print */
+	/* Display HTML element with the .print class */
+	.print{
+		display: block;
+	}
+
+	/* N'affiche pas les éléments ayant la classe screen */
+	/* Doesn't display HTML element with the .screen class */
+	.screen{
+		display: none;
+	}
+
+	/* Titre-courant, toutes les .page avec la classe .runin-ttl auront un titre-courant */
+	/* Running title, to apply running title add .runin-title class to .page */	.runin-ttl::before{
+		content: "titre courant";
+	}
+
+	/* ------- PAGINATION -------*/
+
+	/* Ajoute la pagination aux pages */
+	/* Add counter to page */
+	.page::after{
+		counter-increment: page-counter;
+		content:counter(page-counter);
+		position: absolute;
+		bottom: var(--page-footer-bottom);
+	}
+
+	/* Place la pagination à gauche pour les pages de gauche */
+	/* Place the page counter at the right for the right pages */
+	.page:nth-child(even)::after{
+		left: var(--page-footer-margin);
+	}
+
+	/* Place la pagination à droite pour les pages de droite */
+	/* Place the page counter at the left for the left pages */
+	.page:nth-child(odd)::after{
+		right: var(--page-footer-margin);
+	}
+
+	/* Ajouter la class .nopagination au class .page pour effacer la pagination des pages shouaiter */
+	/* Add .nopagination class to delete pagination on the .page you want */	.page.nopagination::after{
+		content:"";
+	}
+
+	/* Ajouter une class .plainimage pour avoir une image plein pot sur la page */
+	/* Add .plainimage class to display image on plain page */
+	.plainimage{
+		width: calc(var(--page-width) + 1);
+		height: calc(calc(var(--page-height) - var(--page-margin) * 2) - 1mm);
+		margin: auto;
+		-o-object-fit: contain;
+		object-fit: contain;
+	}
+}

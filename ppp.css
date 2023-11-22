@@ -1,0 +1,142 @@
+/* PrePostPrint CSS Print framework */
+
+/*-------------- VARIABLES ---------*/
+/*FR — changer les variables largeur, hauteur (format de la page), marges et position du footer */
+/*EN — Change variable of the page width, page height, width and footer position*/
+:root {
+	/* Largeur de la page / Page width */
+	--page-width: 21cm;
+	/* Hauteur de la page / Page height */
+	--page-height: 29,7cm;
+	/* Marge de la page / Page margins */
+	--page-margin: 0.8cm;
+	/* position du numéro de page / Page counter position */
+	--page-footer-bottom: 0.4cm;
+	--page-footer-margin: 0.8cm;
+}
+
+/*--------- GENERAL STYLE -------*/
+
+body {
+	font-family: Helvetica, sans-serif;
+	margin: 0;
+}
+img {
+	width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 0;
+}
+
+/* Ajouter la classe .print dans une balise HTML pour n'afficher que les éléments à l'impression*/
+/* Add .print class to display html elements only for the print */
+.print {
+	display: none;
+}
+
+/* Ajouter la classe .screen dans une balise HTML pour n'afficher les éléments seulement à l'écran */
+/* Add .screen class to display html elements only for the print */
+.screen {
+	display: block;
+}
+
+/* Ajouter la classe .center pour centrer un élément horizontalement sur la page */
+/* Add .center class to horizontally center a HTML element */
+.center {
+	text-align: center;
+	margin: auto;
+}
+
+/* Ajouter la classe .center-top pour centrer un élément verticalement sur la page */
+/* Add .center-top to vertically align a HTML element */
+.center-top {
+	margin-top: 50vh;
+	transform: translateY(-100%);
+}
+
+/*--------- PRINT STYLE -------*/
+
+/* Media queries : permet d'appliquer des styles en fonction du support de lecture de la page web */
+/* Media queries : Apply styles in relation of the reading support of the webpage */
+@media print {
+	@page {
+		/* choisir le format d'export */
+		/* choosse the size of the pdf output */
+		size: A5;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		/* Paramêtre le décompter de page */
+		/* Set a page counter */
+		counter-reset: page-counter;
+	}
+
+	/* Paramètres de la page */
+	/* Page settings */
+	.page {
+		width: calc(var(--page-width) + 1);
+		height: calc(calc(var(--page-height) - var(--page-margin) * 2) - 1mm);
+		padding: var(--page-margin);
+		page-break-after: always;
+		position: relative;
+	}
+
+	/* Affiche les éléments ayant la classe print */
+	/* Display HTML element with the .print class */
+	.print {
+		display: block;
+	}
+
+	/* N'affiche pas les éléments ayant la classe screen */
+	/* Doesn't display HTML element with the .screen class */
+	.screen {
+		display: none;
+	}
+
+	/* Titre-courant, toutes les .page avec la classe .runin-ttl auront un titre-courant */
+	/* Running title, to apply running title add .runin-title class to .page */
+	.runin-ttl::before {
+		content: "titre courant";
+	}
+
+	/* ------- PAGINATION -------*/
+
+	/* Ajoute la pagination aux pages */
+	/* Add counter to page */
+	.page::after {
+		counter-increment: page-counter;
+		content: counter(page-counter);
+		position: absolute;
+		bottom: var(--page-footer-bottom);
+	}
+
+	/* Place la pagination à gauche pour les pages de gauche */
+	/* Place the page counter at the right for the right pages */
+	.page:nth-child(even)::after {
+		left: var(--page-footer-margin);
+	}
+
+	/* Place la pagination à droite pour les pages de droite */
+	/* Place the page counter at the left for the left pages */
+	.page:nth-child(odd)::after {
+		right: var(--page-footer-margin);
+	}
+
+	/* Ajouter la class .nopagination au class .page pour effacer la pagination des pages shouaiter */
+	/* Add .nopagination class to delete pagination on the .page you want */
+	.page.nopagination::after {
+		content: "";
+	}
+
+	/* Ajouter une class .plainimage pour avoir une image plein pot sur la page */
+	/* Add .plainimage class to display image on plain page */
+	.plainimage {
+		width: calc(var(--page-width) + 1);
+		height: calc(calc(var(--page-height) - var(--page-margin) * 2) - 1mm);
+		margin: auto;
+		-o-object-fit: contain;
+		object-fit: contain;
+	}
+}
